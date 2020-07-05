@@ -1,0 +1,1 @@
+web component的简单介绍。
