@@ -1,0 +1,76 @@
+1.web component自定义元素的名称必须包含连词线，用与区别原生的 HTML 元素。
+
+2.可以使用一个类或函数创建web组件。
+
+3.CustomElementRegistry
+包含自定义元素相关功能，最值得注意的是 CustomElementRegistry.define() 方法用来注册新的自定义元素，这样就可以在文档中使用它们。
+Window.customElements
+返回 CustomElementRegistry 对象的引用。
+
+4.生命周期函数：
+connectedCallback: 当自定义元素第一次被连接到文档DOM时被调用。
+disconnectedCallback: 当自定义元素与文档DOM断开连接时被调用。
+adoptedCallback: 当自定义元素被移动到新文档时被调用。
+attributeChangedCallback: 当自定义元素的一个属性被增加、移除或更改时被调用。
+
+5.is 全局 HTML 属性：允许您指定一个标准HTML元素应该表现得像一个已注册的自定义内置元素。
+
+6.使用自定义元素的两种方式：
+一：独立的元素，它不继承其他内建的HTML元素。你可以直接把它们写成HTML标签的形式，来在页面上使用。例如 <popup-info>
+这种方式元素总是继承自：HTMLElement。
+class WordCount extends HTMLElement{
+    constructor(){
+        super()
+        var a = document.createElement("p");
+        a.innerText = "内容";
+        this.appendChild(a)
+
+    }
+    
+}
+customElements.define("word-count",WordCount);   //自定义元素 word-count
+html中进行使用：<word-count></word-count>
+二：继承自基本的HTML元素。在创建时，你必须指定所需扩展的元素，使用时，需要先写出基本的元素标签，
+并通过 is 属性指定custom element的名称。例如<p is="word-count">, 或者 document.createElement("p", { is: "word-count" })。
+class WordCount extends HTMLParagraphElement{
+    constructor(){
+        super()
+        var a = document.createElement("p");
+        a.innerText = "内容";
+        this.appendChild(a)
+
+    }
+    
+}
+customElements.define("word-count",WordCount,{"extends":"p"});   //自定义元素 word-count
+html中进行使用：<p is="word-count"></p>
+
+7.Shadow DOM 接口是关键所在，它可以将一个隐藏的、独立的 DOM 附加到一个元素上。
+
+8.Shadow DOM 允许将隐藏的 DOM 树附加到常规的 DOM 树中——它以 shadow root 节点为起始根节点，在这个根节点的下方，可以
+是任意元素，和普通的 DOM 元素一样。
+使用shadow自定义的元素，结构例如：
+<shadom-demo>
+    #shadow-root 
+        <p>test</p>
+        <style>
+            p{
+                color:red;
+            }
+        </style>
+</shadom-demo>   
+
+9.Shadow DOM 内部的元素始终不会影响到它外部的元素（除了 :focus-within），这为封装提供了便利。
+
+10.组件之间传递消息：
+子组件：
+connectedCallback() {
+    //触发事件
+    this.dispatchEvent(new CustomEvent('custom', {
+      detail: {message: 'a custom event'},
+       composed: true   //当事件不是从组件本身，而是组件中的某一个元素进行抛出的时候要加上该属性。
+    }));
+}
+父组件中进行监听：
+document.querySelector('my-element').addEventListener('custom', e => console.log('message from event:', e.detail.message));
+

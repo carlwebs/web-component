@@ -1,0 +1,8 @@
+p{
+    /* 接收父组件传递过来的值。 */
+    color: var(--color);  
+}
+/* 设置默认值 */
+:host{
+    --color:blue;
+}

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+       external-demo{
+           --color: blue;
+       }
+    </style>
+</head>
+<body>
+    <custom-one c="blue" name="jack"></custom-one>
+    <p is="custom-two"></p>
+    <shadom-demo></shadom-demo>
+    <shadow-css></shadow-css>
+    <!-- 通过template定义的元素不会显示在html上，可以通过自定义元素引用这个template显示到页面上。
+    页面是默认给template添加了display:none样式。在使用自定义元素的时候渲染该template，
+    template标签也不会显示，只会显示里面的内容。 -->
+    <template id="myTemplate">
+        <style>
+            div{
+                color: yellow;
+            }
+        </style>
+        <div>使用模板的形式自定义组件</div>
+        <div>像这种使用template模板定义的标签不会直接显示在页面上。</div>
+    </template>
+    <my-template></my-template>
+    <template id="mySlot">
+        <div>插槽</div>
+        <div><slot name="myslot">插槽默认内容</slot></div>
+    </template>
+    <my-slot>
+        <h1 slot="myslot">插槽内容填充</h1>
+    </my-slot>
+    <external-demo></external-demo>
+</body>
+<script>
+    // 监听自定义事件
+    document.querySelector('external-demo').addEventListener('custom', e => console.log('message from event:', e.detail.message));
+</script>
+<script src="./index.js"></script>
+<script src="./shadow.js"></script>
+<script src="./template.js"></script>
+<script src="./slot.js"></script>
+<script src="./external.js"></script>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+    <style>
+        /* 传递给子组件的值 */
+        web-component{
+            --color:red;
+        }
+    </style>
+<body>
+    <h3 id="h3">自定义组件</h3>
+    <template id="myTemplate">
+        <div>
+            通过template定义的元素不会直接显示在页面上。
+        </div>
+        <slot name="mySlot">插槽自定义内容。</slot>
+        <p>
+            设置css。
+        </p>
+    </template>
+    <web-component name="默认值">
+        <div slot="mySlot">向插槽传递内容。</div>
+    </web-component>
+</body>
+<script>
+    // 监听子组件传递的数据
+     document.querySelector('web-component').addEventListener('custom', e => console.log('message from event:', e.detail.message));
+</script>
+<script src="./index.js"></script>
+</html>
